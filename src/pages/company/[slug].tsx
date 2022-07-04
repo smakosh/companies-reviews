@@ -2,6 +2,7 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { Client } from "@notionhq/client";
 import { NotionBlock, Render } from "@9gustin/react-notion-render";
+import "@9gustin/react-notion-render/dist/index.css";
 
 type CompanyProps = {
 	blocks: NotionBlock[];
@@ -19,7 +20,7 @@ const Company: NextPage<CompanyProps> = ({ blocks }) => (
 			<p className="text-2xl text-gray-800">
 				Here you can find all the companies I worked for and my honest reviews
 			</p>
-			<Render blocks={blocks} />
+			<Render blocks={blocks} useStyles classNames emptyBlocks />
 		</div>
 	</>
 );
