@@ -1,54 +1,12 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { Client } from "@notionhq/client";
-import { QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints";
-import Link from "next/link";
+import { TCompany } from "typings";
+import Header from "components/Header";
+import Companies from "components/Companies";
 
 type HomeProps = {
-	data: {
-		id: string;
-		properties: {
-			"Would you recommend?": {
-				type: "checkbox";
-				checkbox: boolean;
-			};
-			"Starting Date": {
-				type: "date";
-				date: {
-					start: string;
-				};
-			};
-			"End Date": {
-				type: "date";
-				date: {
-					start: string;
-				};
-			};
-			Review: {
-				type: "number";
-				number: number;
-			};
-			Position: {
-				type: "select";
-				select: {
-					name: "Software engineer";
-				};
-			};
-			Title: {
-				type: "title";
-				title: [
-					{
-						type: "text";
-						text: {
-							content: string;
-							link: null;
-						};
-					}
-				];
-			};
-		};
-		url: string;
-	}[];
+	data: TCompany[];
 };
 
 const Home: NextPage<HomeProps> = ({ data }) => (
@@ -59,41 +17,8 @@ const Home: NextPage<HomeProps> = ({ data }) => (
 			<link rel="icon" href="/favicon.ico" />
 		</Head>
 		<div className="container mx-auto p-16">
-			<h1 className="text-4xl mb-4">Companies Reviews</h1>
-			<p className="text-2xl text-gray-800">
-				Here you can find all the companies I worked for and my honest reviews
-			</p>
-			<ul className="mt-8">
-				{data.map(({ id, properties, url }) => (
-					<li key={id} className="mb-4">
-						<Link href={`/company/${id}`}>
-							<a>
-								<h2 className="text-black font-bold text-xl mb-4">
-									{properties.Title.title[0].text.content}
-								</h2>
-							</a>
-						</Link>
-						<i>Start date: {properties["Starting Date"].date.start}</i>
-						<i>End date: {properties["End Date"].date.start}</i>
-						<p>Position: {properties.Position.select.name}</p>
-						<p>
-							Would you recommend?{" "}
-							{properties["Would you recommend?"].checkbox.valueOf()
-								? "Yes"
-								: "No"}
-						</p>
-						<p>Review: {properties.Review.number}/5</p>
-						<a
-							href={url}
-							target="_blank"
-							rel="noreferrer"
-							className="mt-2 text-blue-500"
-						>
-							Edit on Notion
-						</a>
-					</li>
-				))}
-			</ul>
+			<Header />
+			<Companies data={data} />
 		</div>
 	</>
 );
